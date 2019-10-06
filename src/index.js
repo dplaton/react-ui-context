@@ -9,17 +9,20 @@ const initialViews = [
     {
         id: 'SIGN_IN',
         title: 'Sign in',
-        parent: null
+        parent: null,
+        next: ['MY_ACCOUNT', 'CREATE_ACCOUNT']
     },
     {
         id: 'MY_ACCOUNT',
         title: 'My Account',
-        parent: 'SIGN_IN'
+        parent: 'SIGN_IN',
+        next: []
     },
     {
         id: 'CREATE_ACCOUNT',
         title: 'Create Account',
-        parent: 'SIGN_IN'
+        parent: 'SIGN_IN',
+        next: ['MY_ACCOUNT']
     }
 ];
 

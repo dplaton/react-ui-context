@@ -18,8 +18,8 @@ function App() {
             <GlobalStyle />
             <State
                 view={currentView}
-                handleNext={() => {
-                    api.setView('CREATE_ACCOUNT');
+                handleNext={view => {
+                    api.setView(view);
                 }}
                 handleBack={api.goBack}
             />

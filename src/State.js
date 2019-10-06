@@ -25,7 +25,6 @@ const StyledRectangle = styled.div`
     }
     .footer {
         display: grid;
-        grid-template-columns: 1fr auto 1fr;
         border-top: 1px solid teal;
 
         button {
@@ -33,6 +32,7 @@ const StyledRectangle = styled.div`
             text-transform: uppercase;
             font-size: 1.2rem;
             border: 0;
+            overflow: auto;
             :focus {
                 outline: 0;
             }
@@ -46,7 +46,7 @@ const StyledRectangle = styled.div`
 
 const State = props => {
     const {
-        view: {title},
+        view: {title, next},
         handleNext,
         handleBack
     } = props;
@@ -60,7 +60,16 @@ const State = props => {
             <div className="footer">
                 <button onClick={handleBack}>Back</button>
                 <div className="separator"></div>
-                <button onClick={handleNext}>Next</button>
+                {next !== null &&
+                    next.map(n => (
+                        <button
+                            key={n}
+                            onClick={() => {
+                                handleNext(n);
+                            }}>
+                            {n}
+                        </button>
+                    ))}
             </div>
         </StyledRectangle>
     );
