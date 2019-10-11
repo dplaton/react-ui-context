@@ -7,9 +7,9 @@ const StyledRectangle = styled.div`
     border-radius: 1px;
     display: grid;
     grid-template-rows: auto 1fr auto;
-    height: 200px;
+    min-height: 100px;
+    max-width: 200px;
     position: relative;
-    width: 300px;
     .title-bar {
         border-bottom: 1px solid teal;
         background: green;
@@ -22,6 +22,7 @@ const StyledRectangle = styled.div`
         }
     }
     .body {
+        padding: 0.5rem 1.2rem;
     }
     .footer {
         display: grid;
@@ -46,30 +47,25 @@ const StyledRectangle = styled.div`
 
 const State = props => {
     const {
-        view: {title, next},
-        handleNext,
-        handleBack
+        view: {id, title, next},
+        addView
     } = props;
+
+    const handleAddView = () => {
+        addView({
+            parent: id,
+            title: `Son of ${title}`
+        });
+    };
 
     return (
         <StyledRectangle>
             <div className="title-bar">
                 <h2>{title}</h2>
             </div>
-            <div className="body">This is some content</div>
+            <div className="body">{`This is some content, id is ${id}`}</div>
             <div className="footer">
-                <button onClick={handleBack}>Back</button>
-                <div className="separator"></div>
-                {next !== null &&
-                    next.map(n => (
-                        <button
-                            key={n}
-                            onClick={() => {
-                                handleNext(n);
-                            }}>
-                            {n}
-                        </button>
-                    ))}
+                <button onClick={handleAddView}>Add</button>
             </div>
         </StyledRectangle>
     );

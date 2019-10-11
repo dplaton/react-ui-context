@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-
+import uuid from 'uuid/v1';
 const UiContext = React.createContext();
 
 const initialView = {
@@ -15,7 +15,7 @@ const UiContextProvider = ({initialViews = [], children}) => {
 
     const addView = view => {
         if (view.title && view.parent) {
-            updateViews([...views, view]);
+            updateViews([...views, {...view, id: uuid()}]);
         }
     };
 
@@ -37,7 +37,7 @@ const UiContextProvider = ({initialViews = [], children}) => {
     };
 
     const contextValue = [
-        currentView,
+        {currentView, views},
         {
             setView,
             addView,

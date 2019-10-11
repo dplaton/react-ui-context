@@ -1,5 +1,5 @@
 import React from 'react';
-import {createGlobalStyle} from 'styled-components';
+import styled, {createGlobalStyle} from 'styled-components';
 import {useUiContext} from './context/UiContext';
 
 import State from './State';
@@ -10,20 +10,23 @@ const GlobalStyle = createGlobalStyle`
     }
 `;
 
+const ContentWrapper = styled.div`
+    display: flex;
+    justify-content: space-evenly;
+`;
+
 function App() {
-    const [currentView, api] = useUiContext();
+    const [{views}, api] = useUiContext();
 
     return (
-        <div className="">
+        <ContentWrapper>
             <GlobalStyle />
-            <State
-                view={currentView}
-                handleNext={view => {
-                    api.setView(view);
-                }}
-                handleBack={api.goBack}
-            />
-        </div>
+
+            {views.length > 0 &&
+                views.map(view => (
+                    <State key={view.id} view={view} addView={api.addView} />
+                ))}
+        </ContentWrapper>
     );
 }
 
