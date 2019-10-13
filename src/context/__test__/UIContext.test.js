@@ -33,7 +33,7 @@ const sampleViews = [
 describe('UIContext', () => {
     it('initializes with the correct view', () => {
         const TestComponent = () => {
-            const [currentView] = useUiContext();
+            const [{currentView}] = useUiContext();
             const content = (
                 <div>
                     <h2 aria-label="title">{currentView.title}</h2>
@@ -52,7 +52,7 @@ describe('UIContext', () => {
 
     it('moves to the next view', async () => {
         const TestComponent = () => {
-            const [currentView, api] = useUiContext();
+            const [{currentView}, api] = useUiContext();
             const content = (
                 <div>
                     <h2 aria-label="title">{currentView.title}</h2>
@@ -81,7 +81,7 @@ describe('UIContext', () => {
 
     it('goes back to the previous view', () => {
         const TestComponent = () => {
-            const [currentView, api] = useUiContext();
+            const [{currentView}, api] = useUiContext();
             const content = (
                 <div>
                     <h2 aria-label="title">{currentView.title}</h2>
