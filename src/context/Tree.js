@@ -19,6 +19,28 @@ class Tree {
         this._visitPreorder(this.root, fn);
     }
 
+    findById(id) {
+        if (!id) {
+            return;
+        }
+        let result;
+
+        const find = (id, node) => {
+            if (node.id === id) {
+                result = node;
+                return;
+            }
+            if (node.children.length === 0) {
+                return;
+            }
+            node.children.forEach(kid => {
+                find(id, kid);
+            });
+        };
+        find(id, this.root);
+        return result;
+    }
+
     _visitPreorder(startingNode, fn) {
         // visit the root node
         if (startingNode.children.length === 0) {
@@ -32,7 +54,8 @@ class Tree {
 }
 
 class TreeNode {
-    constructor({title, parent}) {
+    constructor({id, title, parent}) {
+        this.id = id;
         this.title = title;
         this.parent = parent;
         this.children = [];
