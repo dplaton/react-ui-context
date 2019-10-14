@@ -47,7 +47,7 @@ const StyledRectangle = styled.div`
 
 const State = props => {
     const {
-        view: {id, title, next},
+        view: {id, title},
         addView
     } = props;
 
