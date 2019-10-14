@@ -18,14 +18,14 @@ const ContentWrapper = styled.div`
 function App() {
     const [{views}, api] = useUiContext();
 
+    let level = 0;
     return (
         <ContentWrapper>
             <GlobalStyle />
 
-            {views.length > 0 &&
-                views.map(view => (
-                    <State key={view.id} view={view} addView={api.addView} />
-                ))}
+            {views.map(item => (
+                <State key={item.id} view={item} addView={api.addView} />
+            ))}
         </ContentWrapper>
     );
 }

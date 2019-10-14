@@ -27,7 +27,7 @@ const initialViews = [
 ];
 
 ReactDOM.render(
-    <UiContextProvider initialViews={initialViews}>
+    <UiContextProvider>
         <App />
     </UiContextProvider>,
     document.getElementById('root')

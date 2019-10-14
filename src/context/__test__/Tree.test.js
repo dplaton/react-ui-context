@@ -3,13 +3,14 @@ import uuid from 'uuid/v1';
 
 const rootId = uuid();
 const fId = uuid();
-
-const root = new TreeNode({
-    id: rootId,
-    title: 'A'
-});
+const cId = uuid();
+const eId = uuid();
 
 const generateTree = () => {
+    const root = new TreeNode({
+        id: rootId,
+        title: 'A'
+    });
     const tree = new Tree(root);
 
     tree.root.addChild(
@@ -18,13 +19,14 @@ const generateTree = () => {
             title: 'B'
         })
     );
-    const cId = uuid();
+
     const cNode = new TreeNode({
         id: cId,
         title: 'C'
     });
 
     tree.root.addChild(cNode);
+
     const dNode = new TreeNode({
         id: uuid(),
         title: 'D'
@@ -33,7 +35,7 @@ const generateTree = () => {
 
     cNode.addChild(
         new TreeNode({
-            id: uuid(),
+            id: eId,
             title: 'E'
         })
     );
@@ -43,6 +45,7 @@ const generateTree = () => {
             title: 'F'
         })
     );
+
     dNode.addChild(
         new TreeNode({
             id: uuid(),
@@ -73,5 +76,47 @@ describe('Tree', () => {
         element = tree.findById(fId);
         expect(element).not.toBeUndefined();
         expect(element.title).toEqual('F');
+    });
+    it('adds a child node to the root element', () => {
+        const tree = generateTree();
+        const expectedResult = 'ABCEFDGH';
+        let result = '';
+        const fn = node => (result += node.title);
+        let rootNode = tree.findById(rootId);
+        rootNode.addChild(
+            new TreeNode({
+                id: uuid(),
+                title: 'H'
+            })
+        );
+        tree.preorderTraversal(fn);
+
+        expect(result).toEqual(expectedResult);
+    });
+
+    it('adds a child node to an element', () => {
+        const tree = generateTree();
+        const expectedResult = 'ABCEFHDG';
+        let result = '';
+        const fn = node => (result += node.title);
+
+        let cNode = tree.findById(cId);
+        cNode.addChild(new TreeNode({id: uuid(), title: 'H'}));
+
+        tree.preorderTraversal(fn);
+        expect(result).toEqual(expectedResult);
+    });
+
+    it('adds a child node to a leaf element', () => {
+        const tree = generateTree();
+        const expectedResult = 'ABCEHFDG';
+        let result = '';
+        const fn = node => (result += node.title);
+
+        let eNode = tree.findById(eId);
+        eNode.addChild(new TreeNode({id: uuid(), title: 'H'}));
+
+        tree.preorderTraversal(fn);
+        expect(result).toEqual(expectedResult);
     });
 });

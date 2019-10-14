@@ -1,5 +1,7 @@
 import React, {useContext, useState} from 'react';
 import uuid from 'uuid/v1';
+
+import Tree, {TreeNode} from './Tree';
 const UiContext = React.createContext();
 
 const initialView = {
@@ -7,30 +9,43 @@ const initialView = {
     parent: null
 };
 
+const viewsTree = new Tree(new TreeNode({id: uuid(), title: 'Home'}));
+
 const UiContextProvider = ({initialViews = [], children}) => {
     const [currentView, setCurrentView] = useState(
         initialViews[0] || initialView
     );
-    const [views, updateViews] = useState(initialViews);
 
-    const addView = view => {
-        if (view.title && view.parent) {
-            updateViews([...views, {...view, id: uuid()}]);
-        }
+    const readTree = tree => {
+        let list = [];
+        const fn = node => {
+            list.push(node);
+        };
+        tree.preorderTraversal(fn);
+
+        return list;
     };
 
-    const goBack = () => {
-        if (currentView.parent === null) {
-            return;
+    const [views, updateViews] = useState(readTree(viewsTree));
+
+    const addView = view => {
+        console.log(`Adding `, view);
+        const parentNode = viewsTree.findById(view.parent);
+        if (!parentNode) {
+            console.error(`Parent node with id ${view.parent} not found`);
         }
-        const nextView = views.find(v => v.id === currentView.parent);
-        if (nextView) {
-            setCurrentView(nextView);
-        }
+        parentNode.addChild(
+            new TreeNode({
+                id: uuid(),
+                title: view.title
+            })
+        );
+
+        updateViews(readTree(viewsTree));
     };
 
     const setView = viewId => {
-        const view = views.find(v => v.id === viewId);
+        const view = viewsTree.findById(viewId);
         if (view) {
             setCurrentView(view);
         }
@@ -40,8 +55,7 @@ const UiContextProvider = ({initialViews = [], children}) => {
         {currentView, views},
         {
             setView,
-            addView,
-            goBack
+            addView
         }
     ];
 

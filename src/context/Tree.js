@@ -27,6 +27,7 @@ class Tree {
 
         const find = (id, node) => {
             if (node.id === id) {
+                console.log(`Found one!`);
                 result = node;
                 return;
             }
@@ -42,6 +43,7 @@ class Tree {
     }
 
     _visitPreorder(startingNode, fn) {
+        console.log(`Visiting `, startingNode);
         // visit the root node
         if (startingNode.children.length === 0) {
             return;
@@ -54,10 +56,9 @@ class Tree {
 }
 
 class TreeNode {
-    constructor({id, title, parent}) {
+    constructor({id, title}) {
         this.id = id;
         this.title = title;
-        this.parent = parent;
         this.children = [];
     }
 

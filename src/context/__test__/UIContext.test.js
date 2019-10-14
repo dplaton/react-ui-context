@@ -50,7 +50,7 @@ describe('UIContext', () => {
         expect(getByLabelText('title').textContent).toEqual('View One');
     });
 
-    it('moves to the next view', async () => {
+    xit('moves to the next view', async () => {
         const TestComponent = () => {
             const [{currentView}, api] = useUiContext();
             const content = (
@@ -79,7 +79,7 @@ describe('UIContext', () => {
         expect(getByLabelText('title').textContent).toEqual('View 20');
     });
 
-    it('goes back to the previous view', () => {
+    xit('goes back to the previous view', () => {
         const TestComponent = () => {
             const [{currentView}, api] = useUiContext();
             const content = (
