@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {string, shape} from 'prop-types';
+import {string, shape, func} from 'prop-types';
 
 const StyledRectangle = styled.div`
     border: 1px solid teal;
@@ -74,7 +74,8 @@ const State = props => {
 State.propTypes = {
     view: shape({
         title: string.isRequired
-    })
+    }),
+    addView: func.isRequired
 };
 
 export default State;

@@ -1,8 +1,7 @@
 import React from 'react';
-import styled, {createGlobalStyle} from 'styled-components';
-import {useUiContext} from './context/UiContext';
-
-import State from './State';
+import {createGlobalStyle} from 'styled-components';
+import 'normalize.css';
+import StateContainer from './StateContainer';
 
 const GlobalStyle = createGlobalStyle`
     body {
@@ -10,23 +9,12 @@ const GlobalStyle = createGlobalStyle`
     }
 `;
 
-const ContentWrapper = styled.div`
-    display: flex;
-    justify-content: space-evenly;
-`;
-
 function App() {
-    const [{views}, api] = useUiContext();
-
-    let level = 0;
     return (
-        <ContentWrapper>
+        <>
             <GlobalStyle />
-
-            {views.map(item => (
-                <State key={item.id} view={item} addView={api.addView} />
-            ))}
-        </ContentWrapper>
+            <StateContainer />
+        </>
     );
 }
 
