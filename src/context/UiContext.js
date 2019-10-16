@@ -1,7 +1,7 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import uuid from 'uuid/v1';
 
-import Tree, {TreeNode} from './Tree';
+import Tree, {TreeNode, createFromObject} from './Tree';
 const UiContext = React.createContext();
 
 const initialView = {
@@ -9,28 +9,38 @@ const initialView = {
     parent: null
 };
 
-const viewsTree = new Tree(new TreeNode({id: uuid(), title: 'Home'}));
-
-const UiContextProvider = ({initialViews = [], children}) => {
-    const [currentView, setCurrentView] = useState(
-        initialViews[0] || initialView
-    );
-
-    const readTree = tree => {
-        let list = [];
-        const fn = node => {
-            list.push(node);
-        };
-        tree.preorderTraversal(fn);
-
-        return list;
+const readTree = tree => {
+    let list = [];
+    const fn = node => {
+        list.push(node);
     };
+    tree.preorderTraversal(fn);
 
-    const [views, updateViews] = useState(readTree(viewsTree));
+    return list;
+};
+
+const UiContextProvider = ({initialViews = undefined, children}) => {
+    const [viewTree, setViewTree] = useState(undefined);
+    const [currentView, setCurrentView] = useState(undefined);
+    const [views, updateViews] = useState([]);
+
+    useEffect(() => {
+        const viewsTree = initialViews
+            ? createFromObject(initialViews)
+            : new Tree(new TreeNode({id: uuid(), title: 'Home'}));
+        setViewTree(viewsTree);
+    }, []);
+
+    useEffect(() => {
+        if (viewTree) {
+            updateViews(readTree(viewTree));
+            setCurrentView(viewTree.root);
+        }
+    }, [viewTree]);
 
     const addView = view => {
         console.log(`Adding `, view);
-        const parentNode = viewsTree.findById(view.parent);
+        const parentNode = viewTree.findById(view.parent);
         if (!parentNode) {
             console.error(`Parent node with id ${view.parent} not found`);
         }
@@ -41,11 +51,11 @@ const UiContextProvider = ({initialViews = [], children}) => {
             })
         );
 
-        updateViews(readTree(viewsTree));
+        updateViews(readTree(viewTree));
     };
 
     const setView = viewId => {
-        const view = viewsTree.findById(viewId);
+        const view = viewTree.findById(viewId);
         if (view) {
             setCurrentView(view);
         }

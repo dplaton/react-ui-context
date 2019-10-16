@@ -1,53 +1,29 @@
 import React from 'react';
-import {render, fireEvent} from '@testing-library/react';
+import {render, fireEvent, waitForElement} from '@testing-library/react';
 
 import UiContextProvider, {useUiContext} from '../UiContext';
 
-const sampleViews = [
-    {
-        id: 'VIEW_1',
-        title: 'View One',
-        parent: null,
-        next: ['VIEW_20', 'VIEW_21']
-    },
-    {
-        id: 'VIEW_20',
-        title: 'View 20',
-        parent: 'VIEW_1',
-        next: ['VIEW_30']
-    },
-    {
-        id: 'VIEW_21',
-        parent: 'VIEW_1',
-        title: 'View 21',
-        next: []
-    },
-    {
-        id: 'VIEW_30',
-        parent: 'VIEW_20',
-        title: 'View 30',
-        next: []
-    }
-];
+import sampleTree from './sample-tree';
 
 describe('UIContext', () => {
-    it('initializes with the correct view', () => {
+    it('initializes with the correct view', async () => {
         const TestComponent = () => {
             const [{currentView}] = useUiContext();
-            const content = (
-                <div>
-                    <h2 aria-label="title">{currentView.title}</h2>
-                </div>
-            );
+            const content = currentView ? (
+                <h2 aria-label="title">{currentView.title}</h2>
+            ) : null;
 
-            return content;
+            return <div>{content}</div>;
         };
         const {getByLabelText} = render(
-            <UiContextProvider initialViews={sampleViews}>
+            <UiContextProvider initialViews={sampleTree}>
                 <TestComponent />
             </UiContextProvider>
         );
-        expect(getByLabelText('title').textContent).toEqual('View One');
+
+        const node = await waitForElement(() => getByLabelText('title'));
+
+        expect(node.textContent).toEqual('A');
     });
 
     xit('moves to the next view', async () => {
@@ -68,7 +44,7 @@ describe('UIContext', () => {
         };
 
         const {getByLabelText, getByRole} = render(
-            <UiContextProvider initialViews={sampleViews}>
+            <UiContextProvider initialViews={sampleTree}>
                 <TestComponent />
             </UiContextProvider>
         );
@@ -98,7 +74,7 @@ describe('UIContext', () => {
         };
 
         const {getByLabelText, getByText} = render(
-            <UiContextProvider initialViews={sampleViews}>
+            <UiContextProvider initialViews={sampleTree}>
                 <TestComponent />
             </UiContextProvider>
         );

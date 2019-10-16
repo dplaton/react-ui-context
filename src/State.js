@@ -59,7 +59,7 @@ const State = props => {
     };
 
     return (
-        <StyledRectangle>
+        <StyledRectangle aria-label={`state-${id}`}>
             <div className="title-bar">
                 <h2>{title}</h2>
             </div>

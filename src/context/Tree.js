@@ -27,7 +27,7 @@ class Tree {
 
         const find = (id, node) => {
             if (node.id === id) {
-                console.log(`Found one!`);
+                console.log(`Found one! ${node.title}`);
                 result = node;
                 return;
             }
