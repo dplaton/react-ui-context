@@ -1,5 +1,6 @@
-import Tree, {TreeNode} from '../Tree';
+import Tree, {TreeNode, createFromObject} from '../Tree';
 import uuid from 'uuid/v1';
+import sampleTree from './sample-tree';
 
 const rootId = uuid();
 const fId = uuid();
@@ -118,5 +119,16 @@ describe('Tree', () => {
 
         tree.preorderTraversal(fn);
         expect(result).toEqual(expectedResult);
+    });
+    it('creates a tree from a JS object', () => {
+        const tree = createFromObject(sampleTree);
+
+        let result = '';
+        const fn = node => (result += node.title);
+
+        tree.preorderTraversal(fn);
+
+        console.log(result);
+        expect(result).toEqual('ABCEFDG');
     });
 });

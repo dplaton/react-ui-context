@@ -43,7 +43,6 @@ class Tree {
     }
 
     _visitPreorder(startingNode, fn) {
-        console.log(`Visiting `, startingNode);
         // visit the root node
         if (startingNode.children.length === 0) {
             return;
@@ -67,5 +66,34 @@ class TreeNode {
     }
 }
 
+const createFromObject = input => {
+    if (!input['tree'] || typeof input['tree'] !== 'object') {
+        return null;
+    }
+
+    const {id, title} = input['tree'];
+
+    const rootNode = new TreeNode({id, title});
+    const tree = new Tree(rootNode);
+
+    const nodeFromEntry = ({id, title}) => new TreeNode({id, title});
+
+    const createChildNodes = (inputObject, node) => {
+        if (!inputObject.children || inputObject.children.length === 0) {
+            return;
+        }
+
+        inputObject.children.forEach(kid => {
+            const treeNode = nodeFromEntry(kid);
+            node.addChild(treeNode);
+            createChildNodes(kid, treeNode);
+        });
+    };
+
+    createChildNodes(input['tree'], rootNode);
+
+    return tree;
+};
+
 export default Tree;
-export {TreeNode};
+export {TreeNode, createFromObject};
